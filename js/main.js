@@ -154,14 +154,27 @@ jQuery(function($) {
         $("#menuzord").menuzord();
 
         $(".menuzord-menu > li >a").click(function() {
+            //$(".menuzord-menu > li >a").not(this).parent().removeClass("active");
+            $(".menuzord-menu > li").removeClass("active");
             $(this).parent().addClass("active");
-            $(".menuzord-menu > li >a").not(this).parent().removeClass("active");
             var TargetId = $(this).attr('href');
             $('html, body').animate({
                 scrollTop: $(TargetId).offset().top - 50
             }, 1000, 'swing');
             return false;
         });
+		
+		$(".go-to").click(function(){
+			//para los botones de contacto
+			var hash = jQuery(this).attr("data-href");
+            $('html, body').animate({
+                scrollTop: $(hash).offset().top - 50
+            }, 1000, 'swing');
+			$(".menuzord-menu > li").removeClass("active");
+			$(".menuzord-menu > li > a[href=" + hash + "]").parent().addClass("active");
+			
+            return false;
+		});
         /*
         =========================================================================================
         5. TESTIMONIAL SLIDER
