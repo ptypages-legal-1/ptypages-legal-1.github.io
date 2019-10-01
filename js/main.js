@@ -375,6 +375,19 @@ jQuery(function($) {
         =========================================================================================
         */
 
+        $("#categoria").bind('keyup change',function() {
+            "use strict";
+            var value = $(this).val();
+            if (value.length > 1) {
+                $(this).parent().find(".error_message").remove();
+                $(this).css({
+                    "border": "1px solid rgba(0, 0, 0, 0.2)"
+                })
+            } else {
+                $(this).parent().find(".error_message").remove();
+                $(this).parent().append("<div class='error_message'>Por favor elija una categoría.</div>");
+            }
+        });
         $("#Name").keyup(function() {
             "use strict";
             var value = $(this).val();
@@ -385,7 +398,20 @@ jQuery(function($) {
                 })
             } else {
                 $(this).parent().find(".error_message").remove();
-                $(this).parent().append("<div class='error_message'>Name value should be at least 2</div>");
+                $(this).parent().append("<div class='error_message'>Nombre debe tener al menos tres caracteres.</div>");
+            }
+        });
+        $("#Phone").keyup(function() {
+            "use strict";
+            var value = $(this).val();
+            if (value.length > 6) {
+                $(this).parent().find(".error_message").remove();
+                $(this).css({
+                    "border": "1px solid rgba(0, 0, 0, 0.2)"
+                })
+            } else {
+                $(this).parent().find(".error_message").remove();
+                $(this).parent().append("<div class='error_message'>Número de Teléfono no es válido. </div>");
             }
         });
         $("#Email").keyup(function() {
@@ -399,7 +425,7 @@ jQuery(function($) {
                 })
             } else {
                 $(this).parent().find(".error_message").remove();
-                $(this).parent().append("<div class='error_message'>Please entire a valid email. </div>");
+                $(this).parent().append("<div class='error_message'>Dirección de Correo Electrónico no es válido. </div>");
             }
         });
         $("#contact_submit").click(function() {
@@ -410,7 +436,7 @@ jQuery(function($) {
                     "border": "1px solid red"
                 });
                 $("#Name").parent().find(".error_message").remove();
-                $("#Name").parent().append("<div class='error_message'>Name is required</div>");
+                $("#Name").parent().append("<div class='error_message'>Nombre es obligatorio.</div>");
                 return false;
             }
             if (nameValue.length < 1) {
@@ -418,7 +444,7 @@ jQuery(function($) {
                     "border": "1px solid red"
                 });
                 $("#Name").parent().find(".error_message").remove();
-                $("#Name").parent().append("<div class='error_message'>Name value should be at least 2</div>").show();
+                $("#Name").parent().append("<div class='error_message'>Nombre debe tener al menos tres caracteres.</div>").show();
                 return false;
             }
             var emailValue = $("#Email").val();
@@ -428,7 +454,7 @@ jQuery(function($) {
                     "border": "1px solid red"
                 });
                 $("#Email").parent().find(".error_message").remove();
-                $("#Email").parent().append("<div class='error_message'>Email is required</div>").show();
+                $("#Email").parent().append("<div class='error_message'>Dirección de Correo Electrónico no es válido.</div>").show();
                 return false;
             }
             if (!testEmail.test(emailValue)) {
@@ -436,29 +462,33 @@ jQuery(function($) {
                     "border": "1px solid red"
                 });
                 $("#Email").parent().find(".error_message").remove();
-                $("#Email").parent().append("<div class='error_message'>Please entire a valid email.</div>").show();
+                $("#Email").parent().append("<div class='error_message'>Dirección de Correo Electrónico no es válido.</div>").show();
                 return false;
             }
-            var subjectValue = $("#Subject").val();
+            
             var messageValue = $("#Message").val();
             if (nameValue && emailValue) {
                 $(".feedback_box").slideDown();
                 $.ajax({
-                    url: 'mail/mail.php',
+                    //url: "http://localhost:3001/mail-ami",
+                    url: "//limitless-spire-19851.herokuapp.com/mail-ami",
                     data: {
-                        name: nameValue,
+                        nombre: nameValue,
                         email: emailValue,
-                        subject: subjectValue,
-                        message: messageValue
+                        servicio: document.getElementById("categoria").value,
+                        telefono: document.getElementById("Phone").value,
+                        mensaje: messageValue
                     },
                     type: 'POST',
                     success: function(result) {
                         "use strict";
-                        $(".show_result").append("<div class='result_message'>" + result + "</div>");
+                        $(".show_result").append("<div class='result_message'>Gracias por ponerse en contacto.</div>");
                         $(".result_message").slideDown();
                         $("#Name").val("");
                         $("#Email").val("");
                         $("#Subject").val("");
+                        $("#Phone").val("");
+                        $("#categoria").val(-1);
                         $("#Message").val("");
                     }
                 });
