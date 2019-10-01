@@ -469,21 +469,39 @@ jQuery(function($) {
             var messageValue = $("#Message").val();
             if (nameValue && emailValue) {
                 $(".feedback_box").slideDown();
+                $(".msg_normal, .msg_enviado").addClass('hidden');
+                $(".msg_loading").removeClass('hidden');
+				jQuery('#contact_submit').prop("disabled", true);
+				var servicio_seleccionado = [document.getElementById("categoria").value];
+				if(jQuery('#categoria option:selected').parent().attr("label")){
+					servicio_seleccionado.unshift(jQuery('#categoria option:selected').parent().attr("label"));
+				}
+					
                 $.ajax({
                     //url: "http://localhost:3001/mail-ami",
                     url: "//limitless-spire-19851.herokuapp.com/mail-ami",
                     data: {
                         nombre: nameValue,
                         email: emailValue,
-                        servicio: document.getElementById("categoria").value,
+                        servicio:  servicio_seleccionado.join(" > "),
                         telefono: document.getElementById("Phone").value,
                         mensaje: messageValue
                     },
                     type: 'POST',
                     success: function(result) {
                         "use strict";
-                        $(".show_result").append("<div class='result_message'>Gracias por ponerse en contacto.</div>");
-                        $(".result_message").slideDown();
+                        $(".show_result")
+							.html("<div class='result_message'>Gracias por ponerse en contacto.</div>")
+							.removeClass("hidden");
+                        //$(".result_message").slideDown();
+						$(".msg_enviado").removeClass('hidden');
+						$(".msg_loading").addClass("hidden");
+						setTimeout(function(){
+							$(".show_result, .msg_enviado, .msg_loading").addClass("hidden");
+							$(".msg_normal").removeClass('hidden');
+							jQuery('#contact_submit').prop("disabled", false);
+						},2000);
+						
                         $("#Name").val("");
                         $("#Email").val("");
                         $("#Subject").val("");

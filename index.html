@@ -617,6 +617,9 @@
                         <form>
                             <div class="row">
                                 <div class="col-sm-12">
+									<div class="show_result alert alert-success hidden" role="alert">...</div>
+								</div>
+                                <div class="col-sm-12">
 									<select placeholder="¿Cúal solución le interesa?" style="max-width: 100%;" name="categoria" id="categoria">
 										<option selected value="-1">Seleccione una categoría</option>
 										<optgroup label="Civiles">
@@ -671,7 +674,13 @@
                                     <textarea class="form-control" rows="3" id="Message" placeholder="MENSAJE"></textarea>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="button" id="contact_submit" class="btn btn-dm">Enviar Mensaje</button>
+                                    <button type="button" id="contact_submit" class="btn btn-dm">
+										<span class="msg_normal">Enviar Mensaje</span>
+										<span class="msg_loading hidden"><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i> Enviando...</span>
+										<span class="msg_enviado hidden">¡Mensaje enviado!</span>
+									</button>
+									
+								
                                 </div>
                             </div>
                         </form>                        
